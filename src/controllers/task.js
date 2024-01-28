@@ -3,39 +3,32 @@ import userModel from "../models/user.js";
 import mongoose from "../models/index.js";
 
 const createTask = async (req, res) => {
-    try {
-      const { title, description, assignedTo } = req.body;
-  
-      // Check if the assigned user exists
-      if (!mongoose.Types.ObjectId.isValid(assignedTo)) {
-        return res.status(400).json({
-          message: 'Invalid user ID format',
-        });
-      }
-  
-      const existingUser = await userModel.findById(assignedTo);
-  
-      if (!existingUser) {
-        return res.status(400).json({
-          message: 'User not found',
+  try {
+    const { title, description, assignedTo } = req.body;
 
-        });
-      }
-  
-      // Create the task
-      const task = await taskModel.create({
-        title,
-        description,
-        createdBy: req.headers.userId,
-        assignedTo,
-        
+    // Check if the assigned user exists
+    const existingUser = await userModel.findOne({ email: assignedTo });
+
+    if (!existingUser) {
+      return res.status(400).json({
+        message: 'User not found for the provided email',
       });
-  
-      res.status(201).json({ message: 'Task created successfully', task });
-    } catch (error) {
-      res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
-  };
+
+    // Create the task
+    const task = await taskModel.create({
+      title,
+      description,
+      createdBy: req.headers.userId,
+      assignedTo: existingUser._id,
+    });
+
+    res.status(201).json({ message: 'Task created successfully', task });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
+};
+
 
   const getTaskById = async (req, res) => {
     try {
