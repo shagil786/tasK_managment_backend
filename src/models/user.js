@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
 
     mobile: {
         type: Number,
-        
+        required: true,
     },
      work: {
          type: String,
@@ -34,17 +34,17 @@ const userSchema = new mongoose.Schema({
         type:String,
         
     },
-    status: {
-        type: String,
-        required:[true,"Status is Required"],
-        enum: ['Active' , 'InActive'],
-        default: 'Active',
-       
-    },
+       status: {
+            type: String,
+            required:[true,"Status is Required"],
+            enum: ['Active' , 'InActive'],
+            default: 'Active',
+           
+        },
     
     desc: {
         type: String,
-        // required: true,
+        required: true,
     },
 
     datecreated:Date,
