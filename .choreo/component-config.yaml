@@ -6,12 +6,12 @@ component:
 
 environment:
   variables:
-    PORT: 4000
-    dbName: Task-management
-    dbUrl: mongodb+srv://shagilhmx:Vit19-fna@mycluster.jmklzq4.mongodb.net/?retryWrites=true&w=majority&appName=MyCluster
-    SALT_ROUNDS: 10
-    JWT_SECRET: FDFLKNLIJO99409IT49J
-    JWT_EXPIRE: 1d
+      PORT: ${PORT}
+      dbName: ${DB_NAME}
+      dbUrl: ${DB_URL}
+      SALT_ROUNDS: ${SALT_ROUNDS}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRE: ${JWT_EXPIRE}
 
 dependencies:
     - name: express
