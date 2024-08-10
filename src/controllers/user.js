@@ -32,12 +32,13 @@ const create = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    let user = await userModel.findOne({ email: req.body.email });
-    console.log(user);
+    let user = await userModel.findOne({
+      email: { $regex: new RegExp(req.body.email, "i") },
+    });
     if (user) {
       let hashCompare = await auth.hashCompare(
         req.body.password,
-        user.passwordHash,
+        user.password,
       );
 
       if (hashCompare) {
@@ -48,7 +49,7 @@ const login = async (req, res) => {
         });
 
         let userData = await userModel.findOne(
-          { email: req.body.email },
+          { email: { $regex: new RegExp(req.body.email, "i") } },
           { _id: 0, password: 0, createdAt: 0, email: 0 },
         );
         res.status(200).send({
